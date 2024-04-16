@@ -82,12 +82,12 @@ def main():
 
                 # Detect finger pointing up
                 if fingers[1] and all(not f for f in fingers[2:]):
-                    pyautogui.hotkey('ctrl', 'down')
+                    pyautogui.press('volumeup')
                     #print("Volume Up")
                     img = draw_info_text(img, "Volume Up", rect)
                 # Detect finger pointing down
                 elif not fingers[1] and all(not f for f in fingers[2:]):
-                    pyautogui.hotkey('ctrl', 'up')
+                    pyautogui.press('volumedown')
                     #print("Volume Down")
                     img = draw_info_text(img, "Volume Down", rect)
 

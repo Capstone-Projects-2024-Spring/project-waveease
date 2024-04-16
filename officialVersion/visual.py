@@ -17,7 +17,6 @@ VisionRunningMode = mp.tasks.vision.RunningMode
 def print_result(result: GestureRecognizerResult, output_image: mp.Image, timestamp_ms: int):
     print('gesture recognition result: {}'.format(result))
 
-
 model_path = 'gesture_recognizer.task'
 base_options = BaseOptions(model_asset_path=model_path)
 options = GestureRecognizerOptions(
