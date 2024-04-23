@@ -4,15 +4,15 @@ with open('requirements.txt') as f:
     required = f.read().splitlines()
 
 setup(
-    name='imagebind',
+    name='WaveEase',
     version='0.1.0',
     packages=find_packages(),
     description='A brief description of the package',
     long_description_content_type="text/markdown",
-    url='https://github.com/facebookresearch/ImageBind',
+    url='https://github.com/Capstone-Projects-2024-Spring/project-waveease',
     classifiers=[
         'Programming Language :: Python :: 3',
-        'License :: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International',
+        'License :: OSI Approved :: MIT License',
     ],
     install_requires=required,
     dependency_links=['https://download.pytorch.org/whl/cu113'],
