@@ -38,7 +38,7 @@ config = configparser.ConfigParser()
 
 def load_settings(): #load from config file
     try:
-        config.read('config.ini')
+        config.read('officialVersion/config.ini')
         settings["hotkey"] = config.get('hotkey', 'value')
         settings["hotkey2"] = config.get('hotkey2', 'value')
         settings["hotkey3"] = config.get('hotkey3', 'value')
@@ -64,7 +64,7 @@ def save_settings(selected_camera, selected_music_app, hotkey):
     config['hotkey3'] = {'value': hotkey[2].get()}
     config['hotkey4'] = {'value': hotkey[3].get()}
     config['hotkey5'] = {'value': hotkey[4].get()}
-    with open('config.ini', 'w') as configfile:
+    with open('officialVersion/config.ini', 'w') as configfile:
         config.write(configfile)
     messagebox.showinfo('Saved', 'Saved to file')
 
