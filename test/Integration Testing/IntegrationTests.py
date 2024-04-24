@@ -8,6 +8,7 @@ sys.path.append(official_version_dir)
 from gesture_recognition import start
 import cv2
 
+# Use Case 3: Teacher Using WavEase for Geography Activity
 class TestWaveEaseIntegration(unittest.TestCase):
 
     @patch('gesture_recognition.configparser.ConfigParser')
@@ -15,10 +16,10 @@ class TestWaveEaseIntegration(unittest.TestCase):
     @patch('gesture_recognition.pyautogui')
     @patch('gesture_recognition.GestureRecognizer.create_from_options')
     def test_integration(self, mock_create_from_options, mock_pyautogui, mock_cap, mock_configparser):
-        # Mocking necessary objects
+        # Mocking necessary objects for gesture recognition
         mock_cap.return_value.isOpened.return_value = True
         mock_capture = MagicMock()
-        mock_capture.read.return_value = (True, cv2.imread('dog_image.jpg'))  # Assume dog_image.jpg exists
+        mock_capture.read.return_value = (True, cv2.imread('hand_test.jpg'))
         mock_cap.return_value = mock_capture
         mock_create_from_options.return_value.recognize_for_video.return_value.gestures = [(MagicMock(),)]
         mock_pyautogui.press.return_value = None
