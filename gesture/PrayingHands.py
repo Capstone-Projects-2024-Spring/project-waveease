@@ -52,8 +52,15 @@ def main():
                     # Determine if fingers are extended (tip y-coordinate is less than metacarpophalangeal joint y-coordinate)
                     fingers.append(finger_tip.y < finger_mcp.y)
 
-                # Detect "OK" hand sign
-                if all(fingers[1:]) and not fingers[0] and not fingers[4]:
+                # Detect praying gesture with two hands
+                if results.multi_hand_landmarks and len(results.multi_hand_landmarks) == 2:
+                    hand1 = results.multi_hand_landmarks[0]
+                    hand2 = results.multi_hand_landmarks[1]
+
+                    # Check if certain landmarks are aligned to detect the praying gesture
+                    # Add your conditions here based on the landmark positions
+
+                    # If the praying gesture is detected, perform the desired action
                     pyautogui.hotkey('ctrl', 's')
                     rect = calc_bounding_rect(img, hand_landmarks)
                     img = draw_info_text(img, "Save", rect)
