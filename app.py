@@ -8,7 +8,7 @@ from oldversion import camera as ca
 from oldversion.cleanup import cleanup
 from tkinter import messagebox, ttk
 import configparser
-#from playsound import playsound
+from playsound import playsound
 
 import time
 import os
@@ -47,8 +47,6 @@ def load_settings(): #load from config file
     except Exception as e:
         messagebox.showerror('Error loading config, try saving settings first', f'fail {str(e)}')
 
-load_settings()
-
 def save_settings(selected_camera, selected_music_app, hotkey):
     # Update the global setting
     settings["selected_camera"] = selected_camera.get()
@@ -70,9 +68,34 @@ def save_settings(selected_camera, selected_music_app, hotkey):
 
     messagebox.showinfo("Save Setting", "Configuration saved！")
 
+def load_preset(preset, hotkey_entry_var):
+        config2 = configparser.ConfigParser()
+        config2.read('officialVersion/preset.ini')
+
+        hotkey_entry_var[0].set(config2.get(preset, 'h1'))
+        hotkey_entry_var[1].set(config2.get(preset, 'h2'))
+        hotkey_entry_var[2].set(config2.get(preset, 'h3'))
+        hotkey_entry_var[3].set(config2.get(preset, 'h4'))
+        hotkey_entry_var[4].set(config2.get(preset, 'h5'))
+
+def save_preset(preset, hotkey):
+    config2 = configparser.ConfigParser()
+    config2.read('officialVersion/preset.ini')
+    config2[preset.get()] = {
+        'preset': preset.get(),
+        'h1': hotkey[0].get(),
+        'h2': hotkey[1].get(),
+        'h3': hotkey[2].get(),
+        'h4': hotkey[3].get(),
+        'h5': hotkey[4].get()
+    }
+    with open('officialVersion/preset.ini', 'w') as configfile:
+        config2.write(configfile)
+    messagebox.showinfo(preset.get(), 'New preset saved')
 
 def open_settings():
-    
+    load_settings()
+
     # here to open the setting page
     settings_window = tk.Toplevel(root)
     settings_window.title("Setting")
@@ -87,6 +110,7 @@ def open_settings():
     selected_camera = tk.StringVar()
     selected_music_app = tk.StringVar()
     hotkey_entry_var = [tk.StringVar(), tk.StringVar(), tk.StringVar(), tk.StringVar(), tk.StringVar()]
+    preset = tk.StringVar()
 
     # Rollback to previous saved setting
     selected_camera.set(camera_options[0] if camera_options else "No available Camera ")
@@ -124,13 +148,22 @@ def open_settings():
     tk.Label(settings_window, text="Set hotkey 5:").grid(row=7, column=0, pady=10, padx=10, sticky="w")
     tk.Entry(settings_window, textvariable=hotkey_entry_var[4]).grid(row=7, column=1, padx=10, sticky="ew")
 
+    tk.Label(settings_window, text="Preset Settings").grid(row=8, column=0, pady=10, padx=10, sticky="ew", columnspan=2, rowspan=2)
+    tk.Button(settings_window, text="Default", command=lambda: load_preset('default', hotkey_entry_var)).grid(row=10, column=0, pady=10, padx=10, sticky="ew")
+    tk.Button(settings_window, text="PowerPoint", command=lambda: load_preset('powerpoint', hotkey_entry_var)).grid(row=10, column=1, pady=10, padx=10, sticky="ew")
+    tk.Entry(settings_window, textvariable=preset).grid(row=11, column=0, padx=10, sticky="ew", columnspan=2)
+    tk.Button(settings_window, text="Load", command=lambda: load_preset(preset.get(), hotkey_entry_var)).grid(row=12, column=0, pady=10, padx=10, sticky="ew")
+    tk.Button(settings_window, text="Save New", command=lambda: save_preset(preset, hotkey_entry_var)).grid(row=12, column=1, pady=10, padx=10, sticky="ew")
+
+    tk.Label(settings_window, text="‧₊˚ ☁️⋅♡𓂃 ࣪ ִֶָ☾. ⋆｡°•☁️.").grid(row=13, column=0, pady=10, padx=10, sticky="ew", columnspan=2)
+
     # Create save and back button
     save_button = tk.Button(settings_window, text="Save",
                             command=lambda: save_settings(selected_camera, selected_music_app, hotkey_entry_var))
-    save_button.grid(row=8, column=0, pady=10, padx=10, sticky="ew")
+    save_button.grid(row=14, column=0, pady=10, padx=10, sticky="ew")
 
     back_button = tk.Button(settings_window, text="Back", command=settings_window.destroy)
-    back_button.grid(row=8, column=1, pady=10, padx=10, sticky="ew")
+    back_button.grid(row=14, column=1, pady=10, padx=10, sticky="ew")
 
     settings_window.grid_columnconfigure(1, weight=1)
 
@@ -219,6 +252,6 @@ exit_button = tk.Button(root, text="Exit",
                          background='#87CEEB', fg="white")
 exit_button.grid(row=3, column=2, padx=8, pady=8, ipadx=30, ipady=5, sticky='ew')
 
-#playsound('.assets/bird_audio.wav')
+playsound('.assets/bird_audio.wav')
 # start the evert loop
 root.mainloop()
