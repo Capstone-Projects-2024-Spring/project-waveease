@@ -132,23 +132,23 @@ def open_settings():
 
     tk.Button(settings_window, text="Open App", command=launch_app ).grid(row=2, column=0, pady=10, padx=10, sticky="ew", columnspan=2)
 
-    tk.Label(settings_window, text="Set hotkey 1:").grid(row=3, column=0, pady=10, padx=10, sticky="w")
+    tk.Label(settings_window, text="👆Set hotkey 1:").grid(row=3, column=0, pady=10, padx=10, sticky="w")
     hotkey_entry = tk.Entry(settings_window, textvariable=hotkey_entry_var[0])
     hotkey_entry.grid(row=3, column=1, padx=10, sticky="ew")
 
-    tk.Label(settings_window, text="Set hotkey 2:").grid(row=4, column=0, pady=10, padx=10, sticky="w")
+    tk.Label(settings_window, text="👇Set hotkey 2:").grid(row=4, column=0, pady=10, padx=10, sticky="w")
     tk.Entry(settings_window, textvariable=hotkey_entry_var[1]).grid(row=4, column=1, padx=10, sticky="ew")
 
-    tk.Label(settings_window, text="Set hotkey 3:").grid(row=5, column=0, pady=10, padx=10, sticky="w")
+    tk.Label(settings_window, text="🤙Set hotkey 3:").grid(row=5, column=0, pady=10, padx=10, sticky="w")
     tk.Entry(settings_window, textvariable=hotkey_entry_var[2]).grid(row=5, column=1, padx=10, sticky="ew")
 
-    tk.Label(settings_window, text="Set hotkey 4:").grid(row=6, column=0, pady=10, padx=10, sticky="w")
+    tk.Label(settings_window, text="💅Set hotkey 4:").grid(row=6, column=0, pady=10, padx=10, sticky="w")
     tk.Entry(settings_window, textvariable=hotkey_entry_var[3]).grid(row=6, column=1, padx=10, sticky="ew")
 
-    tk.Label(settings_window, text="Set hotkey 5:").grid(row=7, column=0, pady=10, padx=10, sticky="w")
+    tk.Label(settings_window, text="✋Set hotkey 5:").grid(row=7, column=0, pady=10, padx=10, sticky="w")
     tk.Entry(settings_window, textvariable=hotkey_entry_var[4]).grid(row=7, column=1, padx=10, sticky="ew")
 
-    tk.Label(settings_window, text="Preset Settings").grid(row=8, column=0, pady=10, padx=10, sticky="ew", columnspan=2, rowspan=2)
+    tk.Label(settings_window, text="🤘Preset Settings").grid(row=8, column=0, pady=10, padx=10, sticky="ew", columnspan=2, rowspan=2)
     tk.Button(settings_window, text="Default", command=lambda: load_preset('default', hotkey_entry_var)).grid(row=10, column=0, pady=10, padx=10, sticky="ew")
     tk.Button(settings_window, text="PowerPoint", command=lambda: load_preset('powerpoint', hotkey_entry_var)).grid(row=10, column=1, pady=10, padx=10, sticky="ew")
     tk.Entry(settings_window, textvariable=preset).grid(row=11, column=0, padx=10, sticky="ew", columnspan=2)
