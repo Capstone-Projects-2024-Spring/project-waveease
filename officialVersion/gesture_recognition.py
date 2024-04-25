@@ -111,6 +111,13 @@ def start():
                 pyautogui.keyUp(gestures[2])
                 pyautogui.keyUp(gestures[3])
                 pyautogui.keyUp(gestures[4])
+            
+            else :
+                pyautogui.keyUp(gestures[0])
+                pyautogui.keyUp(gestures[1])
+                pyautogui.keyUp(gestures[2])
+                pyautogui.keyUp(gestures[3])
+                pyautogui.keyUp(gestures[4])
                 
 
         cv2.imshow('Camera Feed', frame)
