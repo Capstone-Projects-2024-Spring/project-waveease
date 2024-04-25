@@ -4,7 +4,7 @@ import os
 import sys
 import cv2
 import numpy as np
-import pyautogui
+#import pyautogui
 import mediapipe as mp
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -49,7 +49,7 @@ class TestWaveEaseIntegration(unittest.TestCase):
         mock_create_from_options.return_value.recognize_for_video.assert_called()
         mock_pyautogui.press.assert_called()
 
-    #Use Case 3: Integration Testing for Geography Activity
+    #Use Case 2: Integration Testing for Geography Activity
     def test_integration_for_geography_activity(self):
         # Mocking necessary objects for gesture recognition
         with patch('gesture_recognition.configparser.ConfigParser'), \
