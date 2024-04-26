@@ -12,12 +12,6 @@ from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 
 
 def start_recognition():
-    devices = AudioUtilities.GetSpeakers()
-    interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
-    volume = cast(interface, POINTER(IAudioEndpointVolume))
-    volumeRange = volume.GetVolumeRange()  # (-63.5, 0.0, 0.03125)
-    minVol = volumeRange[0]
-    maxVol = volumeRange[1]
 
     # Create windows
     wScr, hScr = autopy.screen.size()  # Returns the width and height of the computer screen (1920.0, 1080.0)

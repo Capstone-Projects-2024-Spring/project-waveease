@@ -49,7 +49,7 @@ options = GestureRecognizerOptions(
 )
 recognizer = GestureRecognizer.create_from_options(options)
 
-cap = cv2.VideoCapture(0)
+
 previous_position = None
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(min_detection_confidence=0.7, min_tracking_confidence=0.5)
@@ -86,11 +86,12 @@ frames = None
 
 
 def start():
+    cap = cv2.VideoCapture(0)
     load_hotkey()
     while True:
         success, frame = cap.read()
-        frames = frame
         if not success:
+            print("Start up failed")
             break
 
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=frame)
