@@ -1,11 +1,11 @@
 import platform
 import subprocess
 import tkinter as tk
-from oldversion import utile as utile
+import oldversion.camera as ca
+import oldversion.utile as utile
 import gesture.mouse_simulator as ms
 import officialVersion.gesture_recognition as gs
-from oldversion import camera as ca
-from oldversion.cleanup import cleanup
+import oldversion.cleanup as cleanup
 from tkinter import messagebox, ttk
 import configparser
 from playsound import playsound
@@ -25,14 +25,15 @@ settings = {
 
 hotkey_entry = tk.Entry
 
-
+recognitior = gs.GestureRecognition()
 def start_mouse_simulation():
+
     ms.start_recognition()
     messagebox.showinfo("message", "simulation closed!")
 
-
 def start_gesture_recognition():
-    gs.start()
+
+    recognitior.start()
     messagebox.showinfo("message", "recognition closed!")
 
 
@@ -191,7 +192,7 @@ def open_settings():
 
 
 def exit_app():
-    cleanup()
+    cleanup.cleanup()
     root.destroy()
     exit(0)
 

@@ -5,10 +5,8 @@ import pyautogui
 from .hand_detector import HandDetector
 import time
 import autopy
-import win32gui, win32process, psutil
-from ctypes import cast, POINTER
-from comtypes import CLSCTX_ALL
-from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+
+
 
 
 def start_recognition():
@@ -46,13 +44,6 @@ def start_recognition():
         # Create a rectangular box on the image window and move the mouse within the area
         cv2.rectangle(img, pt1, pt2, (0, 142, 255), 5)
         # Determine the process name of the currently active window
-        try:
-            pid = win32process.GetWindowThreadProcessId(win32gui.GetForegroundWindow())
-            print("pid:", pid)
-            active_window_process_name = psutil.Process(pid[-1]).name()
-            print("acitiveprocess:", active_window_process_name)
-        except:
-            pass
         # hand landmarker detection
         # Pass in each frame, return the coordinates of the hand keypoints (dictionary), draw the image after the keypoints.
         hands, img = detector.findHands(img, flipType=False, draw=True)
