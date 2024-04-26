@@ -4,7 +4,7 @@ import os
 import sys
 import cv2
 import numpy as np
-#import pyautogui
+import pyautogui
 import mediapipe as mp
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -75,6 +75,73 @@ class TestWaveEaseIntegration(unittest.TestCase):
             mock_capture.read.assert_called()
             mock_create_from_options.return_value.recognize_for_video.assert_called()
             mock_pyautogui.press.assert_called()
+            
+    # Use Case 3: Integration Testing for PowerPoint Presentation
+    def test_integration_for_powerpoint_presentation(self):
+        # Mocking necessary objects for gesture recognition
+        with patch('gesture_recognition.configparser.ConfigParser'), \
+            patch('gesture_recognition.cap') as mock_cap, \
+            patch('gesture_recognition.pyautogui') as mock_pyautogui, \
+            patch('gesture_recognition.GestureRecognizer.create_from_options') as mock_create_from_options:
+            
+            # Set up mock for capturing image
+            mock_cap.return_value.isOpened.return_value = True
+            mock_capture = MagicMock()
+            mock_capture.read.return_value = (True, np.zeros((480, 640, 3), dtype=np.uint8))
+            mock_cap.return_value = mock_capture
+            
+            # Mock gesture recognition
+            mock_gesture_recognizer = MagicMock()
+            mock_create_from_options.return_value = mock_gesture_recognizer
+            mock_gesture_recognizer.recognize_for_video.return_value.gestures = [("swipe_right", "Next Slide")]
+            mock_pyautogui.press.return_value = None
+
+            # Call the start method
+            start()
+
+            # Assert that the expected methods are called
+            mock_cap.assert_called()
+            mock_capture.read.assert_called()
+            mock_create_from_options.return_value.recognize_for_video.assert_called()
+            mock_pyautogui.press.assert_called_with("Next Slide")
+            
+    # Use Case 4: Integration Testing for Run 3 on CoolMathGames
+    def test_integration_for_run_3_game_with_preset_change(self):
+        # Mocking necessary objects for gesture recognition
+        with patch('gesture_recognition.configparser.ConfigParser'), \
+            patch('gesture_recognition.cap') as mock_cap, \
+            patch('gesture_recognition.pyautogui') as mock_pyautogui, \
+            patch('gesture_recognition.GestureRecognizer.create_from_options') as mock_create_from_options:
+            
+            # Set up mock for capturing image
+            mock_cap.return_value.isOpened.return_value = True
+            mock_capture = MagicMock()
+            mock_capture.read.return_value = (True, np.zeros((480, 640, 3), dtype=np.uint8))
+            mock_cap.return_value = mock_capture
+            
+            # Mock gesture recognition
+            mock_create_from_options.return_value.recognize_for_video.return_value.gestures = [(MagicMock(),)]
+            mock_pyautogui.press.return_value = None
+
+            # Simulate changing preset hotkeys
+            mock_config_parser = mock_create_from_options.return_value
+            mock_config_parser.get_preset_hotkeys.return_value = {
+                'jump': 'Space', #One Finger Up
+                'move_left': 'a', #Two Fingers Up
+                'move_right': 'd', #Three Fingers Up
+                'activate_powerup': 'p' #Three Fingers Up
+            }
+
+            # Call the start method
+            start()
+
+            # Assert that the expected methods are called
+            mock_cap.assert_called()
+            mock_capture.read.assert_called()
+            mock_create_from_options.return_value.recognize_for_video.assert_called()
+            mock_pyautogui.press.assert_called()
+            mock_config_parser.get_preset_hotkeys.assert_called()
+            mock_pyautogui.press.assert_called_with('Space')
 
 if __name__ == '__main__':
     unittest.main()
