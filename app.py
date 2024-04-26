@@ -25,6 +25,7 @@ settings = {
 
 hotkey_entry = tk.Entry
 
+
 def start_mouse_simulation():
     ms.start_recognition()
     messagebox.showinfo("message", "simulation closed!")
@@ -34,9 +35,11 @@ def start_gesture_recognition():
     gs.start()
     messagebox.showinfo("message", "recognition closed!")
 
+
 config = configparser.ConfigParser()
 
-def load_settings(): #load from config file
+
+def load_settings():  # load from config file
     try:
         config.read('officialVersion/config.ini')
         settings["hotkey"] = config.get('hotkey', 'value')
@@ -46,6 +49,7 @@ def load_settings(): #load from config file
         settings["hotkey5"] = config.get('hotkey5', 'value')
     except Exception as e:
         messagebox.showerror('Error loading config, try saving settings first', f'fail {str(e)}')
+
 
 def save_settings(selected_camera, selected_music_app, hotkey):
     # Update the global setting
@@ -68,15 +72,17 @@ def save_settings(selected_camera, selected_music_app, hotkey):
 
     messagebox.showinfo("Save Setting", "Configuration saved！")
 
-def load_preset(preset, hotkey_entry_var):
-        config2 = configparser.ConfigParser()
-        config2.read('officialVersion/preset.ini')
 
-        hotkey_entry_var[0].set(config2.get(preset, 'h1'))
-        hotkey_entry_var[1].set(config2.get(preset, 'h2'))
-        hotkey_entry_var[2].set(config2.get(preset, 'h3'))
-        hotkey_entry_var[3].set(config2.get(preset, 'h4'))
-        hotkey_entry_var[4].set(config2.get(preset, 'h5'))
+def load_preset(preset, hotkey_entry_var):
+    config2 = configparser.ConfigParser()
+    config2.read('officialVersion/preset.ini')
+
+    hotkey_entry_var[0].set(config2.get(preset, 'h1'))
+    hotkey_entry_var[1].set(config2.get(preset, 'h2'))
+    hotkey_entry_var[2].set(config2.get(preset, 'h3'))
+    hotkey_entry_var[3].set(config2.get(preset, 'h4'))
+    hotkey_entry_var[4].set(config2.get(preset, 'h5'))
+
 
 def save_preset(preset, hotkey):
     config2 = configparser.ConfigParser()
@@ -93,14 +99,14 @@ def save_preset(preset, hotkey):
         config2.write(configfile)
     messagebox.showinfo(preset.get(), 'New preset saved')
 
+
 def open_settings():
     load_settings()
 
     # here to open the setting page
     settings_window = tk.Toplevel(root)
     settings_window.title("Setting")
-    #settings_window.geometry("300x250")
-
+    # settings_window.geometry("300x250")
 
     # Camera and music app
     avaible_camera = ca.find_available_cameras()
@@ -130,7 +136,8 @@ def open_settings():
     music_app_menu = ttk.Combobox(settings_window, textvariable=selected_music_app, values=music_app_options)
     music_app_menu.grid(row=1, column=1, padx=10, sticky="ew")
 
-    tk.Button(settings_window, text="Open App", command=launch_app ).grid(row=2, column=0, pady=10, padx=10, sticky="ew", columnspan=2)
+    tk.Button(settings_window, text="Open App", command=launch_app).grid(row=2, column=0, pady=10, padx=10, sticky="ew",
+                                                                         columnspan=2)
 
     tk.Label(settings_window, text="👆Set hotkey 1:").grid(row=3, column=0, pady=10, padx=10, sticky="w")
     hotkey_entry = tk.Entry(settings_window, textvariable=hotkey_entry_var[0])
@@ -148,14 +155,29 @@ def open_settings():
     tk.Label(settings_window, text="✋Set hotkey 5:").grid(row=7, column=0, pady=10, padx=10, sticky="w")
     tk.Entry(settings_window, textvariable=hotkey_entry_var[4]).grid(row=7, column=1, padx=10, sticky="ew")
 
-    tk.Label(settings_window, text="🤘Preset Settings").grid(row=8, column=0, pady=10, padx=10, sticky="ew", columnspan=2, rowspan=2)
-    tk.Button(settings_window, text="Default", command=lambda: load_preset('default', hotkey_entry_var)).grid(row=10, column=0, pady=10, padx=10, sticky="ew")
-    tk.Button(settings_window, text="PowerPoint", command=lambda: load_preset('powerpoint', hotkey_entry_var)).grid(row=10, column=1, pady=10, padx=10, sticky="ew")
+    tk.Label(settings_window, text="🤘Preset Settings").grid(row=8, column=0, pady=10, padx=10, sticky="ew",
+                                                            columnspan=2, rowspan=2)
+    tk.Button(settings_window, text="Default", command=lambda: load_preset('default', hotkey_entry_var)).grid(row=10,
+                                                                                                              column=0,
+                                                                                                              pady=10,
+                                                                                                              padx=10,
+                                                                                                              sticky="ew")
+    tk.Button(settings_window, text="PowerPoint", command=lambda: load_preset('powerpoint', hotkey_entry_var)).grid(
+        row=10, column=1, pady=10, padx=10, sticky="ew")
     tk.Entry(settings_window, textvariable=preset).grid(row=11, column=0, padx=10, sticky="ew", columnspan=2)
-    tk.Button(settings_window, text="Load", command=lambda: load_preset(preset.get(), hotkey_entry_var)).grid(row=12, column=0, pady=10, padx=10, sticky="ew")
-    tk.Button(settings_window, text="Save New", command=lambda: save_preset(preset, hotkey_entry_var)).grid(row=12, column=1, pady=10, padx=10, sticky="ew")
+    tk.Button(settings_window, text="Load", command=lambda: load_preset(preset.get(), hotkey_entry_var)).grid(row=12,
+                                                                                                              column=0,
+                                                                                                              pady=10,
+                                                                                                              padx=10,
+                                                                                                              sticky="ew")
+    tk.Button(settings_window, text="Save New", command=lambda: save_preset(preset, hotkey_entry_var)).grid(row=12,
+                                                                                                            column=1,
+                                                                                                            pady=10,
+                                                                                                            padx=10,
+                                                                                                            sticky="ew")
 
-    tk.Label(settings_window, text="‧₊˚ ☁️⋅♡𓂃 ࣪ ִֶָ☾. ⋆｡°•☁️.").grid(row=13, column=0, pady=10, padx=10, sticky="ew", columnspan=2)
+    tk.Label(settings_window, text="‧₊˚ ☁️⋅♡𓂃 ࣪ ִֶָ☾. ⋆｡°•☁️.").grid(row=13, column=0, pady=10, padx=10, sticky="ew",
+                                                                     columnspan=2)
 
     # Create save and back button
     save_button = tk.Button(settings_window, text="Save",
@@ -189,69 +211,71 @@ def launch_app():
 # Create the main windows
 root = tk.Tk()
 root.title("WavEase!")
-#root.geometry("500x500")  # initial size
+# root.geometry("500x500")  # initial size
 root.resizable(False, False)
-#root.minsize(500, 300)
+# root.minsize(500, 300)
 root.configure(background="#87CEEB")
 
 # layout
-#root.grid_columnconfigure([1, 2], weight=1, minsize=70)
+# root.grid_columnconfigure([1, 2], weight=1, minsize=70)
 # root.grid_columnconfigure(1, weight=1, minsize=70)
 
-#root.grid_rowconfigure(0, weight=1, minsize=50)
-#root.grid_rowconfigure(1, weight=1, minsize=10)
-#root.grid_rowconfigure([2,3], weight=1, minsize=10) ## does not work for Mac
-root.attributes('-alpha', 1.0) 
+# root.grid_rowconfigure(0, weight=1, minsize=50)
+# root.grid_rowconfigure(1, weight=1, minsize=10)
+# root.grid_rowconfigure([2,3], weight=1, minsize=10) ## does not work for Mac
+root.attributes('-alpha', 1.0)
 
 # Add a label
-#label = tk.Label(root, text=r"""\
+# label = tk.Label(root, text=r"""\
 # __          __         _                                       _              __          __                  ______                        
 # \ \        / /        | |                                     | |             \ \        / /                 |  ____|                       
 #  \ \  /\  / /    ___  | |   ___    ___    _ __ ___     ___    | |_    ___      \ \  /\  / /    __ _  __   __ | |__      __ _   ___    ___   
 #   \ \/  \/ /    / _ \ | |  / __|  / _ \  | '_ ` _ \   / _ \   | __|  / _ \      \ \/  \/ /    / _` | \ \ / / |  __|    / _` | / __|  / _ \  
 #    \  /\  /    |  __/ | | | (__  | (_) | | | | | | | |  __/   | |_  | (_) |      \  /\  /    | (_| |  \ V /  | |____  | (_| | \__ \ |  __/  
 #     \/  \/      \___| |_|  \___|  \___/  |_| |_| |_|  \___|    \__|  \___/        \/  \/      \__,_|   \_/   |______|  \__,_| |___/  \___|""", background='#c3c3c3')
-label = tk.Label(root, text= r""" ༄ Welcome to WavEase ༄ """, background='#87CEEB', fg="white")
-label.configure(font = ("Comic Sans MS", 28, "bold"))
+label = tk.Label(root, text=r""" ༄ Welcome to WavEase ༄ """, background='#87CEEB', fg="white")
+label.configure(font=("Comic Sans MS", 28, "bold"))
 label.grid(row=0, column=1, sticky="nsew", padx=20, pady=10, columnspan=2)
 
-#tree graphic
+# tree graphic
 frameCnt = 120
-frames = [tk.PhotoImage(file='.assets/tree-01.gif',format = 'gif -index %i' %(i)) for i in range(frameCnt)]
+frames = [tk.PhotoImage(file='.assets/tree-01.gif', format='gif -index %i' % (i)) for i in range(frameCnt)]
+
 
 def update(ind):
-
     frame = frames[ind]
     ind += 1
     if ind == frameCnt:
         ind = 0
     tree.configure(image=frame)
     root.after(100, update, ind)
+
+
 tree = tk.Label(root, background='#87CEEB')
 tree.grid(row=1, column=1, sticky="nsew", columnspan=2)
 root.after(0, update, 0)
 
 # Add Button
-start_button = tk.Button(root, text="Start Recognition", 
+start_button = tk.Button(root, text="Start Recognition",
                          command=start_gesture_recognition,
                          background='#87CEEB', fg="white")
 start_button.grid(row=2, column=1, padx=8, pady=8, ipadx=30, ipady=5, sticky='ew')
 
-mouse_button = tk.Button(root, text="Start Mouse Simulation", 
+mouse_button = tk.Button(root, text="Start Mouse Simulation",
                          command=start_mouse_simulation,
                          background='#87CEEB', fg="white")
 mouse_button.grid(row=2, column=2, padx=8, pady=8, ipadx=30, ipady=5, sticky='ew')
 
 settings_button = tk.Button(root, text="Settings",
-                             command=open_settings,
-                             background='#87CEEB', fg="white")
+                            command=open_settings,
+                            background='#87CEEB', fg="white")
 settings_button.grid(row=3, column=1, padx=8, pady=8, ipadx=30, ipady=5, sticky='ew')
 
-exit_button = tk.Button(root, text="Exit", 
-                         command=exit_app,
-                         background='#87CEEB', fg="white")
+exit_button = tk.Button(root, text="Exit",
+                        command=exit_app,
+                        background='#87CEEB', fg="white")
 exit_button.grid(row=3, column=2, padx=8, pady=8, ipadx=30, ipady=5, sticky='ew')
 
-playsound('.assets/bird_audio.wav')
+# playsound('.assets/bird_audio.wav')
 # start the evert loop
 root.mainloop()

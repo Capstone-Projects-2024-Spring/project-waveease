@@ -50,7 +50,7 @@ def start_recognition():
 
         img = cv2.flip(img, flipCode=1)  # 1 for horizontal flip, 0 for vertical flip
         # Create a rectangular box on the image window and move the mouse within the area
-        cv2.rectangle(img, pt1, pt2, (0, 255, 255), 5)
+        cv2.rectangle(img, pt1, pt2, (0, 142, 255), 5)
         # Determine the process name of the currently active window
         try:
             pid = win32process.GetWindowThreadProcessId(win32gui.GetForegroundWindow())
@@ -78,8 +78,8 @@ def start_recognition():
             drag_flag = 0
             # Get the coordinates of the tip of the index finger and the tip of the middle finger.
             x1, y1, z1 = lmList[4]  # The index number of the key point at the tip of the index finger is 8
-            x2, y2, z2 = lmList[12]  # Middle Finger Index 12
             x5, y5, z5 = lmList[8]
+            x2, y2, z2 = lmList[12]  # Middle Finger Index 12
 
             # Calculate the coordinates of the midpoint
             # between the index and middle fingers.
@@ -92,7 +92,9 @@ def start_recognition():
 
             # Calculate the distance between the tip of the index finger and the tip of the middle finger, draw the image
             # img, and the information of the fingertip line info.
-            distance, info, img = detector.findDistance((x1, y1), (x2, y2), img)
+            distance1, info1, img = detector.findDistance((x1, y1), (x5, y5), img)
+            distance2, info2, img = detector.findDistance((x1, y1), (x2, y2), img)
+            print("distance1", distance1)
             # Determine the range of mouse movement
             # Maps the range of movement of the index finger tip from a pre-made window range to the computer screen range.
             x3 = np.interp(x1, (pt1[0], pt2[0]), (0, wScr))
@@ -106,19 +108,21 @@ def start_recognition():
             # Record the current gesture state
             current_state = fingers
             # Record the number of frames in the same state
+            autopy.mouse.move(cLocx, cLocy)
             if (prev_state == current_state):
                 frame = frame + 1
             else:
                 frame = 0
             prev_state = current_state
-            if fingers != [0, 0, 0, 0, 0] and toggle and frame >= 2:
-                autopy.mouse.toggle(None, False)
+            if fingers == [1, 1, 1, 1, 1] and toggle and frame >= 2:
+                pyautogui.mouseUp(button='left')
                 toggle = False
                 print("Release left hold")
                 # With only the index and middle fingers up, it is considered to be moving the mouse
-            if fingers[0] == 1 and fingers[1] == 1 and fingers[2] == 1 and sum(fingers) == 3 and frame >= 1:
+            if fingers[0] == 1 or fingers[0] == 0 and fingers[1] == 1 or fingers[1] == 0 and fingers[2] == 1 and sum(
+                    fingers) < 3 and frame >= 1:
                 # move mouse
-                autopy.mouse.move(cLocx, cLocy)  # Give the coordinates of the mouse movement position
+                # Give the coordinates of the mouse movement position
 
                 print("Move mouse")
 
@@ -127,23 +131,37 @@ def start_recognition():
 
                 # If the index and middle fingers are up and the distance between the fingertips is less than a certain
                 # value, it is considered to be a mouse click. A mouse click is considered a mouse click when the distance between the fingers is less than 43 (pixel distance)
-                if distance < 100 and frame > 2:
-                    # Draw a green circle on the tip of your index finger to indicate that you are clicking the mouse
-                    cv2.circle(img, (x1, y1), 15, (0, 255, 0), cv2.FILLED)
 
-                    # left click on the mouse
-                    pyautogui.click()
+                if distance1 < 43 and frame > 2 and not toggle:
+                    pyautogui.leftClick()
                     cv2.putText(img, "left_click", (150, 50), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255, 0), 3)
                     print("Left Click")
+                elif distance2 < 43 and frame > 2 and not toggle:
+                    pyautogui.rightClick()
+                    print("Right click")
+                    cv2.putText(img, "rigth_click", (150, 50), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255, 0), 3)
+                    cv2.circle(img, (x2, y2), 15, (0, 255, 0), cv2.FILLED)
+
                 else:
                     cv2.putText(img, "move", (150, 50), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255, 0), 3)
 
+            elif fingers == [0, 0, 0, 0, 0] and not toggle and frame >= 2:
+                # Draw a green circle on the tip of your index finger to indicate that you are clicking the mouse
+
+                cv2.circle(img, (x1, y1), 15, (0, 255, 0), cv2.FILLED)
+
+                # left click on the mouse
+                pyautogui.mouseDown(button="left")
+                cv2.putText(img, "dragging", (150, 50), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255, 0), 3)
+                print("dragging")
+                toggle = True
+
             # Bend your middle finger and put your index finger on top. Right click on the mouse.
-            elif fingers[1] == 1 and fingers[2] == 0 and sum(fingers) == 1 and frame >= 2:
-                pyautogui.rightClick()
-                print("Right click")
-                cv2.putText(img, "rigth_click", (150, 50), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255, 0), 3)
-                cv2.circle(img, (x2, y2), 15, (0, 255, 0), cv2.FILLED)
+            # elif fingers[1] == 1 and fingers[2] == 0 and sum(fingers) == 1 and frame >= 2:
+            #     pyautogui.rightClick()
+            #     print("Right click")
+            #     cv2.putText(img, "rigth_click", (150, 50), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255, 0), 3)
+            #     cv2.circle(img, (x2, y2), 15, (0, 255, 0), cv2.FILLED)
 
         # Display image
         # FPS Show

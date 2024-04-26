@@ -1,8 +1,11 @@
+import queue
+import threading
+
 import cv2
 import mediapipe as mp
 import numpy as np
-#import pyautogui #using directinput to allow more application access
-import pydirectinput as pyautogui
+import pyautogui #using directinput to allow more application access
+import pydirectinput as pyautogui2
 import configparser
 
 from .draw_utiles import draw_landmarks_on_image
@@ -15,7 +18,7 @@ GestureRecognizerOptions = mp.tasks.vision.GestureRecognizerOptions
 GestureRecognizerResult = mp.tasks.vision.GestureRecognizerResult
 VisionRunningMode = mp.tasks.vision.RunningMode
 
-#here data from config.ini should be accessed that will change button pressed based on saved hotkey
+# here data from config.ini should be accessed that will change button pressed based on saved hotkey
 gestures = [
     'volumeup',
     'volumedown',
@@ -23,6 +26,14 @@ gestures = [
     's',
     'ctrl'
 ]
+flags = {
+    gestures[0]: False,
+    gestures[1]: False,
+    gestures[2]: False,
+    gestures[3]: False,
+    gestures[4]: False,
+
+}
 
 
 # Create a gesture recognizer instance with the live stream mode:
@@ -44,6 +55,8 @@ mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(min_detection_confidence=0.7, min_tracking_confidence=0.5)
 mp_draw = mp.solutions.drawing_utils
 
+gesture_queue = queue.Queue()
+
 
 def draw_progress_bar(img, value, max_value, text, pos, bar_color=(0, 255, 0), text_color=(255, 255, 255)):
     x, y, w, h = pos
@@ -55,7 +68,8 @@ def draw_progress_bar(img, value, max_value, text, pos, bar_color=(0, 255, 0), t
     # put the text
     cv2.putText(img, f'{text}: {value:.2f}', (x, y + h + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.6, text_color, 2)
 
-def load_hotkey(): #load from config file
+
+def load_hotkey():  # load from config file
     try:
         config = configparser.ConfigParser()
         config.read('officialVersion/config.ini')
@@ -67,10 +81,15 @@ def load_hotkey(): #load from config file
     except Exception as e:
         print('Error loading config, try saving settings first', f'fail {str(e)}')
 
+
+frames = None
+
+
 def start():
     load_hotkey()
-    while cap.isOpened():
+    while True:
         success, frame = cap.read()
+        frames = frame
         if not success:
             break
 
@@ -79,23 +98,26 @@ def start():
         gesture_recognition_result = recognizer.recognize_for_video(mp_image, int(cap.get(cv2.CAP_PROP_POS_MSEC)))
 
         if gesture_recognition_result.gestures:
-            print(gesture_recognition_result.gestures[0][0].category_name)
+            # print(gesture_recognition_result.gestures[0][0].category_name)
             draw_progress_bar(frame, gesture_recognition_result.gestures[0][0].score, 1.0,
                               gesture_recognition_result.gestures[0][0].category_name, (50, 50, 200, 20))
             frame = draw_landmarks_on_image(frame, gesture_recognition_result)
-            print('gesture recognition result: {}' + format(gesture_recognition_result))
+            # print('gesture recognition result: {}' + format(gesture_recognition_result))
             if gesture_recognition_result.gestures[0][0].category_name == 'Pointing_up':
+                #if not flags[gestures[0]]:
                 pyautogui.press(gestures[0])
+                    #flags[gestures[0]] = True
                 cv2.putText(frame, gestures[0], (250, 60), cv2.FONT_HERSHEY_SIMPLEX, 2, (50, 200, 150), 3)
             elif gesture_recognition_result.gestures[0][0].category_name == 'pointing_down':
                 pyautogui.press(gestures[1])
                 cv2.putText(frame, gestures[1], (250, 60), cv2.FONT_HERSHEY_SIMPLEX, 2, (50, 200, 150), 3)
-            
             elif gesture_recognition_result.gestures[0][0].category_name == 'pinkyThumb':
                 pyautogui.keyDown(gestures[2])
                 cv2.putText(frame, gestures[2], (250, 60), cv2.FONT_HERSHEY_SIMPLEX, 2, (50, 200, 150), 3)
             elif gesture_recognition_result.gestures[0][0].category_name == 'three':
+                #if not flags[gestures[3]]:
                 pyautogui.keyDown(gestures[3])
+                   # flags[gestures[3]] = True
                 cv2.putText(frame, gestures[3], (250, 60), cv2.FONT_HERSHEY_SIMPLEX, 2, (50, 200, 150), 3)
             elif gesture_recognition_result.gestures[0][0].category_name == 'four':
                 pyautogui.keyDown(gestures[4])
@@ -104,24 +126,29 @@ def start():
                 print("YEAHHHHHHH no gesture map......... yet")
             elif gesture_recognition_result.gestures[0][0].category_name == 'index_pinky':
                 print("no action my love")
-            
+
             elif gesture_recognition_result.gestures[0][0].category_name == 'palm':
-                pyautogui.keyUp(gestures[0])
-                pyautogui.keyUp(gestures[1])
-                pyautogui.keyUp(gestures[2])
-                pyautogui.keyUp(gestures[3])
-                pyautogui.keyUp(gestures[4])
-            
-            else :
-                pyautogui.keyUp(gestures[0])
-                pyautogui.keyUp(gestures[1])
-                pyautogui.keyUp(gestures[2])
-                pyautogui.keyUp(gestures[3])
-                pyautogui.keyUp(gestures[4])
-                
+                print("do nothing")
+                for gesture in flags:
+                    if gesture:
+                        pyautogui.keyUp(gesture)
+                        flags[gesture] = False
+                # pyautogui.keyUp(gestures[0])
+                # pyautogui.keyUp(gestures[1])
+                # pyautogui.keyUp(gestures[2])
+                # pyautogui.keyUp(gestures[3])
+                # pyautogui.keyUp(gestures[4])
+
+            else:
+                print("do nothing")
+                # pyautogui.keyUp(gestures[0])
+                # pyautogui.keyUp(gestures[1])
+                # pyautogui.keyUp(gestures[2])
+                # pyautogui.keyUp(gestures[3])
+                # pyautogui.keyUp(gestures[4])
 
         cv2.imshow('Camera Feed', frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv2.waitKey(1) & 0xFF == 27:  # Each frame lags for 20 milliseconds and then disappears, ESC key to exit
             break
 
     cap.release()
