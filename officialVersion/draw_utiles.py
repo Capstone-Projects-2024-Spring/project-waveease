@@ -1,6 +1,7 @@
 import cv2
-from mediapipe import solutions
-from mediapipe.framework.formats import landmark_pb2
+
+import mediapipe.python.solutions as solutions
+import mediapipe.framework.formats.landmark_pb2 as landmark_pb2
 import numpy as np
 
 MARGIN = 10  # pixels

@@ -6,7 +6,8 @@ import oldversion.utile as utile
 import gesture.mouse_simulator as ms
 import officialVersion.gesture_recognition as gs
 import oldversion.cleanup as cleanup
-from tkinter import messagebox, ttk
+import tkinter.messagebox as messagebox
+import tkinter.ttk as ttk
 import configparser
 from playsound import playsound
 
@@ -26,13 +27,39 @@ settings = {
 hotkey_entry = tk.Entry
 
 recognitior = gs.GestureRecognition()
-def start_mouse_simulation():
 
+
+def start_mouse_simulation():
     ms.start_recognition()
     messagebox.showinfo("message", "simulation closed!")
 
-def start_gesture_recognition():
 
+def show_tutorial():
+    tutorial_window = tk.Toplevel(root)
+    tutorial_window.title("Tutorial")
+    tutorial_window.geometry("600x400")
+    tutorial_window.configure(bg="#f0f0f0")
+
+    scrollbar = tk.Scrollbar(tutorial_window)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    text_widget = tk.Text(tutorial_window, wrap=tk.WORD, yscrollcommand=scrollbar.set,
+                          font=("Helvetica", 14), bg="#ffffff", fg="#333333")
+    text_widget.pack(expand=True, fill='both', padx=20, pady=20)
+
+    tutorial_text = """
+    1. Move the mouse: Extend your right hand palm to move (note that it is the right hand).
+    2. Left mouse button: Keep your fingers upward, use your index finger and thumb to touch; keep the other fingers upward, this is the left click.
+    3. Right mouse button: Similarly, use your middle finger and thumb to touch.
+    4. Drag, hold the left button: Make a fist, then extend your thumb to trigger the drag mode, moving with the thumb as the coordinate. Switch to using your palm to engage the drag mode.
+    """
+    text_widget.insert(tk.END, tutorial_text)
+    text_widget.config(state='disabled')
+
+    scrollbar.config(command=text_widget.yview)
+
+
+def start_gesture_recognition():
     recognitior.start()
     messagebox.showinfo("message", "recognition closed!")
 
@@ -49,7 +76,7 @@ def load_settings():  # load from config file
         settings["hotkey4"] = config.get('hotkey4', 'value')
         settings["hotkey5"] = config.get('hotkey5', 'value')
     except Exception as e:
-        messagebox.showerror('Error loading config, try saving settings first', f'fail {str(e)}')
+        messagebox.showerror('config file not exist, will load from preset file', f'fail {str(e)}')
 
 
 def save_settings(selected_camera, selected_music_app, hotkey):
@@ -77,13 +104,14 @@ def save_settings(selected_camera, selected_music_app, hotkey):
 def load_preset(preset, hotkey_entry_var):
     config2 = configparser.ConfigParser()
     config2.read('officialVersion/preset.ini')
-
-    hotkey_entry_var[0].set(config2.get(preset, 'h1'))
-    hotkey_entry_var[1].set(config2.get(preset, 'h2'))
-    hotkey_entry_var[2].set(config2.get(preset, 'h3'))
-    hotkey_entry_var[3].set(config2.get(preset, 'h4'))
-    hotkey_entry_var[4].set(config2.get(preset, 'h5'))
-
+    try:
+        hotkey_entry_var[0].set(config2.get(preset, 'h1'))
+        hotkey_entry_var[1].set(config2.get(preset, 'h2'))
+        hotkey_entry_var[2].set(config2.get(preset, 'h3'))
+        hotkey_entry_var[3].set(config2.get(preset, 'h4'))
+        hotkey_entry_var[4].set(config2.get(preset, 'h5'))
+    except Exception as e:
+        messagebox.showerror('Error to load preset file', f'fail {str(e)}')
 
 def save_preset(preset, hotkey):
     config2 = configparser.ConfigParser()
@@ -267,6 +295,11 @@ mouse_button = tk.Button(root, text="Start Mouse Simulation",
                          background='#87CEEB', fg="white")
 mouse_button.grid(row=2, column=2, padx=8, pady=8, ipadx=30, ipady=5, sticky='ew')
 
+tutorial_button = tk.Button(root, text="Show Tutorial",
+                            command=show_tutorial,
+                            background='#87CEEB', fg="white")
+tutorial_button.grid(row=2, column=3, padx=8, pady=8, ipadx=30, ipady=5, sticky='ew')
+
 settings_button = tk.Button(root, text="Settings",
                             command=open_settings,
                             background='#87CEEB', fg="white")
@@ -277,6 +310,6 @@ exit_button = tk.Button(root, text="Exit",
                         background='#87CEEB', fg="white")
 exit_button.grid(row=3, column=2, padx=8, pady=8, ipadx=30, ipady=5, sticky='ew')
 
-# playsound('.assets/bird_audio.wav')
+playsound('.assets/bird_audio.wav')
 # start the evert loop
 root.mainloop()

@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 import pyautogui
-
 from .hand_detector import HandDetector
 import time
 import autopy
@@ -117,11 +116,11 @@ def start_recognition():
                 # If the index and middle fingers are up and the distance between the fingertips is less than a certain
                 # value, it is considered to be a mouse click. A mouse click is considered a mouse click when the distance between the fingers is less than 43 (pixel distance)
 
-                if distance1 < 43 and frame > 2 and not toggle:
+                if distance1 < 43 and frame < 2 and not toggle:
                     pyautogui.leftClick()
                     cv2.putText(img, "left_click", (150, 50), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255, 0), 3)
                     print("Left Click")
-                elif distance2 < 43 and frame > 2 and not toggle:
+                elif distance2 < 43 and frame < 2 and not toggle:
                     pyautogui.rightClick()
                     print("Right click")
                     cv2.putText(img, "rigth_click", (150, 50), cv2.FONT_HERSHEY_PLAIN, 3, (0, 255, 0), 3)
@@ -158,7 +157,7 @@ def start_recognition():
         cv2.putText(img, str(int(fps)), (70, 50), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 3)
 
         # Display image, input window name and image data
-        cv2.imshow('frame', img)
+        cv2.imshow('Mouse Simulation', img)
         if cv2.waitKey(1) & 0xFF == 27:  # Each frame lags for 20 milliseconds and then disappears, ESC key to exit
             break
 

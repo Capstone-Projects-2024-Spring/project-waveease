@@ -149,7 +149,7 @@ class HandDetector:
             return length, info
 
 
-def main():
+def test():
     cap = cv2.VideoCapture(0)
     detector = HandDetector(detectionCon=0.8, maxHands=2)
     while True:
@@ -187,5 +187,3 @@ def main():
         cv2.waitKey(1)
 
 
-if __name__ == "__main__":
-    main()

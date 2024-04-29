@@ -180,5 +180,3 @@ class UnitTests(unittest.TestCase):
         self.assertTrue(cursor_moved, "Cursor did not move within the timeframe")
 
 
-if __name__ == '__main__':
-    unittest.main()
