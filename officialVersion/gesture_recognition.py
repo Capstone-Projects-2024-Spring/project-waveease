@@ -77,6 +77,7 @@ class GestureRecognition:
     frames = None
 
     def start(self):
+        last_key = None
         cap = cv2.VideoCapture(0)
         self._load_hotkey()
         while True:
@@ -97,23 +98,27 @@ class GestureRecognition:
                 frame = draw_landmarks_on_image(frame, gesture_recognition_result)
                 # print('gesture recognition result: {}' + format(gesture_recognition_result))
                 if gesture_recognition_result.gestures[0][0].category_name == 'Pointing_up':
-                    # if not flags[gestures[0]]:
                     pyautogui.keyDown(self.gestures[0])
+
                     # flags[gestures[0]] = True
                     cv2.putText(frame, self.gestures[0], (250, 60), cv2.FONT_HERSHEY_SIMPLEX, 2, (50, 200, 150), 3)
                 elif gesture_recognition_result.gestures[0][0].category_name == 'pointing_down':
                     pyautogui.keyDown(self.gestures[1])
+
                     cv2.putText(frame, self.gestures[1], (250, 60), cv2.FONT_HERSHEY_SIMPLEX, 2, (50, 200, 150), 3)
                 elif gesture_recognition_result.gestures[0][0].category_name == 'pinkyThumb':
                     pyautogui.keyDown(self.gestures[2])
+
                     cv2.putText(frame, self.gestures[2], (250, 60), cv2.FONT_HERSHEY_SIMPLEX, 2, (50, 200, 150), 3)
                 elif gesture_recognition_result.gestures[0][0].category_name == 'three':
                     # if not flags[gestures[3]]:
                     pyautogui.keyDown(self.gestures[3])
+
                     # flags[gestures[3]] = True
                     cv2.putText(frame, self.gestures[3], (250, 60), cv2.FONT_HERSHEY_SIMPLEX, 2, (50, 200, 150), 3)
                 elif gesture_recognition_result.gestures[0][0].category_name == 'four':
                     pyautogui.keyDown(self.gestures[4])
+
                     cv2.putText(frame, self.gestures[4], (250, 60), cv2.FONT_HERSHEY_SIMPLEX, 2, (50, 200, 150), 3)
                 elif gesture_recognition_result.gestures[0][0].category_name == 'Yeah':
                     print("YEAHHHHHHH no gesture map......... yet")
@@ -121,6 +126,7 @@ class GestureRecognition:
                     print("no action my love")
 
                 elif gesture_recognition_result.gestures[0][0].category_name == 'palm':
+                    print("do nothing")
                     pyautogui.keyUp(self.gestures[0])
                     pyautogui.keyUp(self.gestures[1])
                     pyautogui.keyUp(self.gestures[2])
@@ -130,14 +136,9 @@ class GestureRecognition:
                 else:
                     print("do nothing")
 
-            cv2.imshow('Camera Feed', frame)
+            cv2.imshow('Gesture Recognition', frame)
             if cv2.waitKey(1) & 0xFF == 27:  # Each frame lags for 20 milliseconds and then disappears, ESC key to exit
                 break
 
         cap.release()
         cv2.destroyAllWindows()
-
-
-if __name__ == '__main__':
-    recognizer = GestureRecognition()
-    GestureRecognition.start(recognizer)
