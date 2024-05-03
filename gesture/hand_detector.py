@@ -1,4 +1,5 @@
 ##For self Learning
+## reference: https://www.youtube.com/watch?v=8gPONnGIPgw
 
 import cv2
 import mediapipe as mp
