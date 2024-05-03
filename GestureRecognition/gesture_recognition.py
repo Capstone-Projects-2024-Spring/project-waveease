@@ -45,7 +45,7 @@ class GestureRecognition:
             'ctrl'
         ]
 
-        model_path = 'officialVersion/own_trained_02.task'
+        model_path = 'GestureRecognition/own_trained_02.task'
         self.base_options = BaseOptions(model_asset_path=model_path)
         self.options = GestureRecognizerOptions(
             base_options=BaseOptions(model_asset_path=model_path),
@@ -65,7 +65,7 @@ class GestureRecognition:
     def _load_hotkey(self):  # load from config file
         try:
             config = configparser.ConfigParser()
-            config.read('officialVersion/config.ini')
+            config.read('GestureRecognition/config.ini')
             self.gestures[0] = config.get('hotkey', 'value')
             self.gestures[1] = config.get('hotkey2', 'value')
             self.gestures[2] = config.get('hotkey3', 'value')

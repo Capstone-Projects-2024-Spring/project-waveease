@@ -28,7 +28,37 @@ The conceptual design for this project would be a laptop with a built-in camera 
 ## Background
 
 The idea for this product is to associate specific gestures with predefined commands. For example, a swipe gesture to the right can be associated with turning on the lights, while a swipe gesture to the left can be associated with turning them off. While there is not an existing product that is able to do this, researchers at the University of Washington are close to achieving this. Their approach is to use Wi-Fi signals to detect specific movements instead of cameras (Ma,2013). This would be different from the approach I suggested earlier because my idea is to use a laptop camera. A product that I found that is like this is the Xbox Kinect. The Kinect uses cameras to recognize gestures and allow you to interact with games on the Xbox (Palangetić, 2014). This is like my proposal because it uses a camera to capture images and allow a user to interact with the games on the device. However, it is also different because it doesn’t connect to smart devices and allows you to control certain features.
+## Installation
 
+To get started with WavEase, follow these steps:
+
+1. **Install Python 3.8**: If you don't have Python installed, download and install it from the [official Python website](https://www.python.org/downloads/) or using a package manager like [Homebrew](https://brew.sh/) (for macOS and Linux) or [Chocolatey](https://chocolatey.org/) (for Windows).
+
+2. **Create a Python 3.8 Virtual Environment (optional but recommended)**: It's good practice to isolate your project dependencies in a virtual environment. To create a virtual environment, open a terminal or command prompt, navigate to your project directory, and run the following command:
+   
+   ```
+   python3.8 -m venv venv
+   ```
+3. **Activate the Virtual Environment (optional but recommended)**: Before installing the project dependencies, activate the virtual environment. Run the appropriate command based on your operating system:
+
+- **On macOS and Linux**:
+  ```
+  source venv/bin/activate
+  ```
+
+- **On Windows**:
+  ```
+  venv\Scripts\activate
+  ```
+
+4. **Install Required Packages**: Once the virtual environment is activated, install the required Python packages listed in `requirements.txt` by running the following command:
+   ```
+   pip install -r requirements.txt
+   ```
+5. **Start the Application**: After installing the dependencies, you can start the application. Run the following command:
+   ```
+   python app.py
+   ```
 ## Required Resources
 
 The required hardware for this project would be a laptop with a working camera. Specific python libraries like TensorFlow, NumPy, and OpenCV would be needed to train the model and capture images to input into the model once it is trained. It would be beneficial if the people working on this project had experience or knowledge with computer vision, convolutional neural network architecture, and API calls to connect to the smart devices. While wireless networks would most likely be the preferred way, if anyone has experience with IoT devices and connections that could be a route to go for integrating smart devices as well.

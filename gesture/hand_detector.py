@@ -1,5 +1,5 @@
-
 ##For self Learning
+## reference: https://www.youtube.com/watch?v=8gPONnGIPgw
 
 import cv2
 import mediapipe as mp
@@ -65,7 +65,6 @@ class HandDetector:
         # }
         #  ]
 
-
         if self.results.multi_hand_landmarks:
             for handType, handLms in zip(self.results.multi_handedness, self.results.multi_hand_landmarks):
                 myHand = {}
@@ -106,7 +105,7 @@ class HandDetector:
                                                self.mpHands.HAND_CONNECTIONS)
                     cv2.rectangle(img, (bbox[0] - 20, bbox[1] - 20),
                                   (bbox[0] + bbox[2] + 20, bbox[1] + bbox[3] + 20),
-                                  (255, 0, 255), 2)  #Red and blue are purple
+                                  (255, 0, 255), 2)  # Red and blue are purple
                     cv2.putText(img, myHand["type"], (bbox[0] - 30, bbox[1] - 30), cv2.FONT_HERSHEY_PLAIN,
                                 2, (255, 0, 255), 2)
         if draw:
