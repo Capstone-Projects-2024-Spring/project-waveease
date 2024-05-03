@@ -8,7 +8,7 @@ import pyautogui
 import mediapipe as mp
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
-official_version_dir = os.path.abspath(os.path.join(current_dir, '..', '..', 'officialVersion'))
+official_version_dir = os.path.abspath(os.path.join(current_dir, '..', '..', 'GestureRecognition'))
 sys.path.append(official_version_dir)
 from gesture_recognition import start
 

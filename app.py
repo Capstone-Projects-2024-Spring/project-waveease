@@ -4,7 +4,7 @@ import tkinter as tk
 import oldversion.camera as ca
 import oldversion.utile as utile
 import gesture.mouse_simulator as ms
-import officialVersion.gesture_recognition as gs
+import GestureRecognition.gesture_recognition as gs
 import oldversion.cleanup as cleanup
 import tkinter.messagebox as messagebox
 import tkinter.ttk as ttk
@@ -69,7 +69,7 @@ config = configparser.ConfigParser()
 
 def load_settings():  # load from config file
     try:
-        config.read('officialVersion/config.ini')
+        config.read('GestureRecognition/config.ini')
         settings["hotkey"] = config.get('hotkey', 'value')
         settings["hotkey2"] = config.get('hotkey2', 'value')
         settings["hotkey3"] = config.get('hotkey3', 'value')
@@ -94,7 +94,7 @@ def save_settings(selected_camera, selected_music_app, hotkey):
     config['hotkey3'] = {'value': hotkey[2].get()}
     config['hotkey4'] = {'value': hotkey[3].get()}
     config['hotkey5'] = {'value': hotkey[4].get()}
-    with open('officialVersion/config.ini', 'w') as configfile:
+    with open('GestureRecognition/config.ini', 'w') as configfile:
         config.write(configfile)
     messagebox.showinfo('Saved', 'Saved to file')
 
@@ -103,7 +103,7 @@ def save_settings(selected_camera, selected_music_app, hotkey):
 
 def load_preset(preset, hotkey_entry_var):
     config2 = configparser.ConfigParser()
-    config2.read('officialVersion/preset.ini')
+    config2.read('GestureRecognition/preset.ini')
     try:
         hotkey_entry_var[0].set(config2.get(preset, 'h1'))
         hotkey_entry_var[1].set(config2.get(preset, 'h2'))
@@ -115,7 +115,7 @@ def load_preset(preset, hotkey_entry_var):
 
 def save_preset(preset, hotkey):
     config2 = configparser.ConfigParser()
-    config2.read('officialVersion/preset.ini')
+    config2.read('GestureRecognition/preset.ini')
     config2[preset.get()] = {
         'preset': preset.get(),
         'h1': hotkey[0].get(),
@@ -124,7 +124,7 @@ def save_preset(preset, hotkey):
         'h4': hotkey[3].get(),
         'h5': hotkey[4].get()
     }
-    with open('officialVersion/preset.ini', 'w') as configfile:
+    with open('GestureRecognition/preset.ini', 'w') as configfile:
         config2.write(configfile)
     messagebox.showinfo(preset.get(), 'New preset saved')
 
