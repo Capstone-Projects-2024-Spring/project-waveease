@@ -1,3 +1,5 @@
+## Reference: https://www.youtube.com/watch?v=8gPONnGIPgw
+
 import cv2
 import numpy as np
 import pyautogui
@@ -6,10 +8,7 @@ import time
 import autopy
 
 
-
-
 def start_recognition():
-
     # Create windows
     wScr, hScr = autopy.screen.size()  # Returns the width and height of the computer screen (1920.0, 1080.0)
     wCam, hCam = 1280, 1280  # Width and height of the video display window
