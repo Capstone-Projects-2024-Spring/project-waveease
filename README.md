@@ -76,7 +76,7 @@ The required hardware for this project would be a laptop with a working camera. 
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/tul53850">
+        <a href="https://github.com/jasonhankins1">
             <img src="https://avatars.githubusercontent.com/u/111989518?v=4" width="100;" alt="Jason"/>
             <br />
             <sub><b>Jason Hankins</b></sub>
